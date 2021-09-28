@@ -2,19 +2,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Board {
-    // actions
-//    public static Action LEFT = new DynamicAction("L");
-
+public class Node {
     private char[] state;
+    private Node parent;
+    private int cost; // each action costs 1
+    private int totalCost;
 
-    public Board() {
-        state = new char[] {'1','2','3','4','5','6','7','8','_'};
-    }
-
-    public Board(File f) {
+    /**
+     * Constructor
+     *
+     * @param f provided file
+     */
+    public Node(File f) {
         state = new char[9];
-
         try {
             Scanner fScan = new Scanner(f);
             for (int i = 0; i < state.length; i++) {
@@ -23,13 +23,41 @@ public class Board {
         } catch (Exception e) {
             System.out.println(e);
         }
+        cost = 0;
+        totalCost = 0;
     }
 
+    /**
+     * Getters
+     */
     public char[] getState() {
         return state;
     }
-    public String path = "";
+    public Node getParent() {
+        return parent;
+    }
+    public int getCost() { return cost; }
+    public int totalCost() { return totalCost; }
 
+    /**
+     * Setters
+     */
+    public void setState(char[] state) {
+        this.state = state;
+    }
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    /**
+     * Actions
+     */
     public void moveGapRight() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
@@ -39,7 +67,6 @@ public class Board {
             setValue(x + 1, y, '_');
         }
     }
-
     public void moveGapLeft() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
@@ -49,7 +76,6 @@ public class Board {
             setValue(x - 1, y, '_');
         }
     }
-
     public void moveGapDown() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
@@ -60,7 +86,6 @@ public class Board {
         }
 
     }
-
     public void moveGapUp() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);

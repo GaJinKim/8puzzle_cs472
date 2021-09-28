@@ -1,11 +1,7 @@
 import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static final char[] goalState = {'1','2','3','4','5','6','7','8','_'};
-
     public static void main (String[] arg) {
         Scanner scan = new Scanner(System.in);
         Boolean again = true;
@@ -17,13 +13,7 @@ public class Main {
             System.out.println("Enter Algorithm (e.g. \"BFS\")");
             String algorithm = scan.next();
 
-            // TODO: comment out the test directory
-        File file = new File("./puzzles/Part2/S2.txt");
-//            File file = new File(filePath);
-
-            Board board = new Board(file);
-
-//            System.out.println(board.toString()); // TODO: Remove
+            Node board = new Node(new File(filePath));
 
             // determine if valid 8 puzzle
             if (!board.isSolvable()) {
@@ -38,5 +28,6 @@ public class Main {
             again = endProgram.equals("y") ? false : true;
         }
     }
+
 
 }
