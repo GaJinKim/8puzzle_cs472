@@ -23,11 +23,16 @@ public class Main {
 
             Board board = new Board(file);
 
-            // stuff
-            System.out.println(board.toString());; // print board
-            Boolean isSolvable = board.isSolvable();
-            System.out.println("Board is solvable? " + isSolvable);
+//            System.out.println(board.toString()); // TODO: Remove
 
+            // determine if valid 8 puzzle
+            if (!board.isSolvable()) {
+                System.out.println("Board is not solvable (odd number of inversions: " + board.numInversions() + ")");
+            } else {
+                board.moveGapUp(); // TODO: Remove
+//                System.out.println(board.toString());
+
+            }
             System.out.println("\nEnd Program? (y/n)");
             String endProgram = scan.next();
             again = endProgram.equals("y") ? false : true;
