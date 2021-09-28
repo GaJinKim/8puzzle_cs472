@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static final char[][] goalState = {{'1','2','3'},
-            {'4','5','6'},
-            {'7','8','_'}};
+    public static final char[] goalState = {'1','2','3','4','5','6','7','8','_'};
 
     public static void main (String[] arg) {
         Scanner scan = new Scanner(System.in);
@@ -26,7 +24,7 @@ public class Main {
             Board board = new Board(file);
 
             // stuff
-            board.printBoard(); // print board
+            System.out.println(board.toString());; // print board
             Boolean isSolvable = board.isSolvable();
             System.out.println("Board is solvable? " + isSolvable);
 
