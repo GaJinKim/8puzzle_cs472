@@ -1,8 +1,13 @@
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    public static final char[][] goalState = {{'1','2','3'},
+            {'4','5','6'},
+            {'7','8','_'}};
+
     public static void main (String[] arg) {
         Scanner scan = new Scanner(System.in);
         Boolean again = true;
@@ -18,7 +23,12 @@ public class Main {
             File file = new File(filePath);
 
             char[][] puzzle = generatePuzzle(file);
+
+            // stuff
             printPuzzle(puzzle);
+            if (!isSolvable(puzzle)) {
+                System.out.println("The");
+            }
 
             System.out.println("\nEnd Program? (y/n)");
             String endProgram = scan.next();
@@ -58,5 +68,34 @@ public class Main {
             }
             System.out.println();
         }
+    }
+
+    private static boolean isSolvable(char[][] puzzle) {
+        int inversions = 0;
+        ArrayList<Integer> tiles = new ArrayList<Integer>();
+
+        for (int i = 0; i < puzzle.length; i++) {
+            for (int j = 0; j < puzzle[0].length; j++) {
+                if (puzzle[i][j] != '_') {
+                    // TODO: refactor so it's less of an eye sore
+                    tiles.add(Integer.parseInt(Character.toString(puzzle[i][j])));
+                }
+            }
+        }
+
+//        for (int i = 0; i < tiles.size(); i++) // Testing purposes
+//            System.out.println(tiles.get(i));
+
+        for (int i = 0; i < tiles.size(); i++) {
+            for (int j = i + 1; j < tiles.size(); j++) {
+                if (tiles.get(i) > tiles.get(j)) {
+                    inversions++;
+                    System.out.println("(" + tiles.get(i) +","+ tiles.get(j) +")");
+                }
+            }
+        }
+
+//        System.out.println("inversions: " + inversions); // Testing purposes
+        return inversions % 2 == 0; // solvable if number of inversions is even
     }
 }
