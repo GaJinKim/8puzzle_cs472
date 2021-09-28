@@ -2,9 +2,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * "A Node is a bookkeeping data structure used to represent the search tree"
+ *
+ * Node = <state, parent-node, action, path-cost>
+ */
 public class Node {
     private char[] state;
     private Node parent;
+    private Action action;
     private int cost; // each action costs 1
     private int totalCost;
 
@@ -23,6 +29,7 @@ public class Node {
         } catch (Exception e) {
             System.out.println(e);
         }
+        parent = null;
         cost = 0;
         totalCost = 0;
     }
@@ -58,7 +65,7 @@ public class Node {
     /**
      * Actions
      */
-    public void moveGapRight() {
+    public void moveLeft() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
         int y = getYCoord(gapPos);
@@ -67,7 +74,7 @@ public class Node {
             setValue(x + 1, y, '_');
         }
     }
-    public void moveGapLeft() {
+    public void moveRight() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
         int y = getYCoord(gapPos);
@@ -76,7 +83,7 @@ public class Node {
             setValue(x - 1, y, '_');
         }
     }
-    public void moveGapDown() {
+    public void moveUp() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
         int y = getYCoord(gapPos);
@@ -86,7 +93,7 @@ public class Node {
         }
 
     }
-    public void moveGapUp() {
+    public void moveDown() {
         int gapPos = getGapPosition();
         int x = getXCoord(gapPos);
         int y = getYCoord(gapPos);
