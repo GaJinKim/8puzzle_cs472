@@ -1,7 +1,4 @@
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class Search {
     private Node root;
@@ -31,21 +28,34 @@ public class Search {
     }
 
     /**
+     *  Goal test
+     *
+     *  Used to check whether goal configuration is reached
+     */
+    public boolean atGoalState(Node node) {
+        return Arrays.equals(node.getState(), goalState);
+    }
+
+    /**
      * Breadth First Search (BFS)
      *
      * prints out solution or failure
      */
     public void breadthFirstSearch() {
-        Queue<Node> frontier = new LinkedList<Node>(); // FIFO queue initially containing one path, for the problem's initial state
-        Set<Node> reached = new HashSet<Node>(); // set of states; initially empty
-        String solution = "failure";
+//        Queue<Node> frontier = new LinkedList<Node>(); // FIFO queue initially containing one path, for the problem's initial state
+//        Set<Node> reached = new HashSet<Node>(); // set of states; initially empty
+//        String solution = "failure";
+//
+//        while (!frontier.isEmpty()) {
+//            Node parent = frontier.peek();
+//
+//        }
 
-        while (!frontier.isEmpty()) {
-            Node parent = frontier.peek();
-
+        if (atGoalState(root)) {
+            System.out.println("woohoo we're at the goal state!");
+        } else {
+            System.out.println("hey not at goal state!");
         }
-
-
 
 
     }
