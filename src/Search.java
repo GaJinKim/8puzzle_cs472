@@ -42,19 +42,13 @@ public class Search {
      * prints out solution or failure
      */
     public void breadthFirstSearch() {
-//        Queue<Node> frontier = new LinkedList<Node>(); // FIFO queue initially containing one path, for the problem's initial state
-//        Set<Node> reached = new HashSet<Node>(); // set of states; initially empty
-//        String solution = "failure";
-//
-//        while (!frontier.isEmpty()) {
-//            Node parent = frontier.peek();
-//
-//        }
+        Set<Node> closed = new HashSet<Node>();
+        Queue<Node> fringe = new LinkedList<Node>(); // FIFO queue initially containing one path, for the problem's initial state
 
-        if (atGoalState(root)) {
-            System.out.println("woohoo we're at the goal state!");
-        } else {
-            System.out.println("hey not at goal state!");
+        while (true) {
+            if (fringe.isEmpty()) {
+
+            }
         }
 
 

@@ -5,12 +5,13 @@ import java.util.Scanner;
 /**
  * "A Node is a bookkeeping data structure used to represent the search tree"
  *
- * Node = <state, parent-node, action, path-cost>
+ * Node = <state, parent (node), action, depth, path-cost>
  */
 public class Node {
-    private char[] state;
+    private char[] state; // representation of a physical configuration (i.e. 8puzzle grid)
     private Node parent;
     private Action action;
+    private int depth;
     private int cost; // each action costs 1
     private int totalCost;
 
@@ -29,9 +30,20 @@ public class Node {
         } catch (Exception e) {
             System.out.println(e);
         }
+
         parent = null;
+        depth = 0;
         cost = 0;
         totalCost = 0;
+    }
+
+    public Node(Node n) {
+        state = n.state;
+        parent = n.parent;
+        action = n.action;
+        depth = n.depth;
+        cost = n.cost;
+        totalCost = n.totalCost;
     }
 
     /**
@@ -43,8 +55,10 @@ public class Node {
     public Node getParent() {
         return parent;
     }
+    public Action getAction() { return action; }
+    public int getDepth() { return depth; }
     public int getCost() { return cost; }
-    public int totalCost() { return totalCost; }
+    public int gettotalCost() { return totalCost; }
 
     /**
      * Setters
@@ -55,6 +69,8 @@ public class Node {
     public void setParent(Node parent) {
         this.parent = parent;
     }
+    public void setAction(Action action) { this.action = action; }
+    public void setDepth(int depth) { this.depth = depth; }
     public void setCost(int cost) {
         this.cost = cost;
     }
@@ -144,8 +160,6 @@ public class Node {
     }
 
     /**
-     * PRIVATE METHODS
-     *
      * Referenced from AIMA:
      * https://github.com/aimacode/aima-java/blob/AIMA3e/aima-core/src/main/java/aima/core/environment/eightpuzzle/EightPuzzleBoard.java
      */
@@ -165,7 +179,7 @@ public class Node {
         return state[getPosition(x, y)];
     }
 
-    private int getGapPosition() {
+    public int getGapPosition() {
         return getPositionOf('_');
     }
 
