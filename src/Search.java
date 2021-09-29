@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Search {
-    private Node root;
+    private Node root; // initial state
     private char[] goalState;
 
     /**
@@ -43,14 +43,23 @@ public class Search {
      */
     public void breadthFirstSearch() {
         Set<Node> closed = new HashSet<Node>();
-        Queue<Node> fringe = new LinkedList<Node>(); // FIFO queue initially containing one path, for the problem's initial state
+        Queue<Node> fringe = new LinkedList<Node>();
 
-        while (true) {
-            if (fringe.isEmpty()) {
+        Node current = new Node(root);
+//        while (!atGoalState(current)) {
+            closed.add(current);
+            System.out.println(current.toString());
 
-            }
-        }
+            List<Node> successors = Successor.getSuccessors(current);
 
-
+//            for (Node n : successors) {
+//                if (closed.contains(n)) {
+//                    continue;
+//                }
+//                closed.add(n);
+//                Node child = new Node(n);
+//                current.add
+//            }
+//        }
     }
 }

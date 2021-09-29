@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Node {
     private char[] state; // representation of a physical configuration (i.e. 8puzzle grid)
     private Node parent;
-    private Action action;
+    private Action action; // TODO : not sure if this is necessary based on the way i've implemented
     private int depth;
     private int cost; // each action costs 1
     private int totalCost;
@@ -38,12 +38,11 @@ public class Node {
     }
 
     public Node(Node n) {
-        state = n.state;
-        parent = n.parent;
-        action = n.action;
-        depth = n.depth;
-        cost = n.cost;
-        totalCost = n.totalCost;
+        this.state = n.state;
+        this.parent = n.parent;
+        this.depth = n.depth;
+        this.cost = n.cost;
+        this.totalCost = n.totalCost;
     }
 
     /**
@@ -58,7 +57,7 @@ public class Node {
     public Action getAction() { return action; }
     public int getDepth() { return depth; }
     public int getCost() { return cost; }
-    public int gettotalCost() { return totalCost; }
+    public int getTotalCost() { return totalCost; }
 
     /**
      * Setters
@@ -89,6 +88,7 @@ public class Node {
             setValue(x, y, getValueAt(x + 1, y));
             setValue(x + 1, y, '_');
         }
+        action = Action.LEFT;
     }
     public void moveRight() {
         int gapPos = getGapPosition();
@@ -98,6 +98,7 @@ public class Node {
             setValue(x, y, getValueAt(x - 1, y));
             setValue(x - 1, y, '_');
         }
+        action = Action.RIGHT;
     }
     public void moveUp() {
         int gapPos = getGapPosition();
@@ -107,7 +108,7 @@ public class Node {
             setValue(x, y, getValueAt(x, y + 1));
             setValue(x, y + 1, '_');
         }
-
+        action = Action.UP;
     }
     public void moveDown() {
         int gapPos = getGapPosition();
@@ -117,6 +118,7 @@ public class Node {
             setValue(x, y, getValueAt(x, y - 1));
             setValue(x, y - 1, '_');
         }
+        action = Action.DOWN;
     }
 
     /**
