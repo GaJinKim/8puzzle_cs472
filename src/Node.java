@@ -10,10 +10,7 @@ import java.util.Scanner;
 public class Node {
     private char[] state; // representation of a physical configuration (i.e. 8puzzle grid)
     private Node parent;
-    private Action action; // TODO : not sure if this is necessary based on the way i've implemented
-    private int depth;
-    private int cost; // each action costs 1
-    private int totalCost;
+    private Action action;
 
     /**
      * Constructor
@@ -30,19 +27,12 @@ public class Node {
         } catch (Exception e) {
             System.out.println(e);
         }
-
         parent = null;
-        depth = 0;
-        cost = 0;
-        totalCost = 0;
     }
 
     public Node(Node n) {
         this.state = n.state.clone();
         this.parent = n.parent;
-        this.depth = n.depth;
-        this.cost = n.cost;
-        this.totalCost = n.totalCost;
     }
 
     /**
@@ -55,9 +45,6 @@ public class Node {
         return parent;
     }
     public Action getAction() { return action; }
-    public int getDepth() { return depth; }
-    public int getCost() { return cost; }
-    public int getTotalCost() { return totalCost; }
 
     /**
      * Setters
@@ -69,13 +56,6 @@ public class Node {
         this.parent = parent;
     }
     public void setAction(Action action) { this.action = action; }
-    public void setDepth(int depth) { this.depth = depth; }
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
-    }
 
     /**
      * Actions
@@ -88,7 +68,7 @@ public class Node {
             setValue(x, y, getValueAt(x + 1, y));
             setValue(x + 1, y, '_');
         }
-        action = Action.LEFT;
+        action = Action.L;
     }
     public void moveRight() {
         int gapPos = getGapPosition();
@@ -98,7 +78,7 @@ public class Node {
             setValue(x, y, getValueAt(x - 1, y));
             setValue(x - 1, y, '_');
         }
-        action = Action.RIGHT;
+        action = Action.R;
     }
     public void moveUp() {
         int gapPos = getGapPosition();
@@ -108,7 +88,7 @@ public class Node {
             setValue(x, y, getValueAt(x, y + 1));
             setValue(x, y + 1, '_');
         }
-        action = Action.UP;
+        action = Action.U;
     }
     public void moveDown() {
         int gapPos = getGapPosition();
@@ -118,7 +98,7 @@ public class Node {
             setValue(x, y, getValueAt(x, y - 1));
             setValue(x, y - 1, '_');
         }
-        action = Action.DOWN;
+        action = Action.D;
     }
 
     /**
@@ -151,9 +131,11 @@ public class Node {
 
         for (int i = 0; i < state.length; i++) {
             for (int j = i + 1; j < state.length; j++) {
-                if (state[i] > state[j]) {
-                    inversions++;
-//                    System.out.println("(" + tiles.get(i) +","+ tiles.get(j) +")");
+                if (state[i] != '_' && state[j] != '_') {
+                    if (Character.valueOf(state[i]) > Character.valueOf(state[j])) {
+                        inversions++;
+//                        System.out.println("(" + state[i] + "," + state[j] + ")"); // for testing
+                    }
                 }
             }
         }

@@ -8,30 +8,38 @@ public class Main {
 
         while (again) {
             System.out.println("Enter file path (e.g. \"./puzzles/Part2/S2.txt\"):");
-            String filePath = scan.next();
+            Node initialState = new Node(new File(scan.next()));
 
-            Node initialState = new Node(new File(filePath));
-
-            // determine if valid 8 puzzle
+            // before attempting to solve
             if (!initialState.isSolvable()) {
                 System.out.println("Board is not solvable (odd number of inversions: " + initialState.numInversions() + ")");
-            } else {
-                System.out.println("Enter Algorithm (e.g. \"BFS\", \"IDS\", \"h1\", \"h2\", \"h3\")");
-                String algorithm = scan.next();
-
+            }
+            else {
+                // before attempting to solve
                 Search search = new Search(initialState);
-
-                switch(algorithm) {
-                    case "BFS":
-                        search.breadthFirstSearch();
+                if (search.atGoalState(initialState)) {
+                    System.out.println("Board is already at goal state");
                 }
 
+                // attempt to solve
+                else {
+                    System.out.println("Enter Algorithm (e.g. \"BFS\", \"IDS\", \"h1\", \"h2\", \"h3\")");
+                    String algorithm = scan.next();
+
+                    switch (algorithm) {
+                        case "BFS":
+                            search.breadthFirstSearch();
+                        case "IDS":
+                            search.iterativeDeepeningSearch();
+
+                        default:
+                            System.out.println("Error: Please re-enter algorithm");
+                    }
+                }
             }
             System.out.println("\nEnd Program? (y/n)");
             String endProgram = scan.next();
             again = endProgram.equals("y") ? false : true;
         }
     }
-
-
 }
