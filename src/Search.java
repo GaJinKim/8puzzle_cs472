@@ -48,9 +48,10 @@ public class Search {
         Node current = new Node(root);
 //        while (!atGoalState(current)) {
             closed.add(current);
-            System.out.println(current.toString());
 
             List<Node> successors = Successor.getSuccessors(current);
+
+        System.out.println("possible successors");
 
 //            for (Node n : successors) {
 //                if (closed.contains(n)) {

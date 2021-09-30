@@ -15,12 +15,19 @@ public class Successor {
 
         Node leftNode = new Node(node);
         leftNode.moveLeft();
+        leftNode.setParent(node); // needs a reference to its parent
+
         Node rightNode = new Node(node);
         rightNode.moveRight();
+        rightNode.setParent(node);
+
         Node upNode = new Node(node);
         upNode.moveUp();
+        upNode.setParent(node);
+
         Node downNode = new Node(node);
         downNode.moveDown();
+        downNode.setParent(node);
 
         /**
          * Board Positions

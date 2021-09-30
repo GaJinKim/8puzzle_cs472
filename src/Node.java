@@ -38,7 +38,7 @@ public class Node {
     }
 
     public Node(Node n) {
-        this.state = n.state;
+        this.state = n.state.clone();
         this.parent = n.parent;
         this.depth = n.depth;
         this.cost = n.cost;
