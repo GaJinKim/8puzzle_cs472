@@ -46,8 +46,8 @@ public class Search {
      * <Total nodes generated, Total time taken, Valid sequence of actions>>
      */
     public void breadthFirstSearch() {
-        Set<char[]> closed = new HashSet<char[]>();
-        Queue<Node> fringe = new LinkedList<Node>();
+        Set<char[]> closed = new HashSet<char[]>(); // closed list (explored set)
+        Queue<Node> fringe = new LinkedList<Node>(); // open list (not yet explored set)
         fringe.add(root);
 
         boolean foundSolution = false;
@@ -64,37 +64,49 @@ public class Search {
             for (Node child : successors) {
                 if (!(closed.contains(child.getState()) || fringe.contains(child))) {
                     if (atGoalState(child)) {
+                        printSolution(totalNodes, System.currentTimeMillis() - startTime, child);
                         foundSolution = true;
-
-                        System.out.println("Total nodes generated: " + totalNodes);
-                        printFormattedRunTime(System.currentTimeMillis() - startTime);
-
-                        Stack<Action> solution = new Stack<>();
-                        while (!child.equals(root)) {
-                            solution.add(child.getAction());
-                            child = child.getParent();
-                        }
-
-                        System.out.println("Path length: " + solution.size());
-                        System.out.print("Path: ");
-
-                        while (!solution.isEmpty())
-                            System.out.print(solution.pop());
-
                         break outerloop;
                     }
                     fringe.add(child);
                 }
             }
         }
-        if (!foundSolution)
+        if (!foundSolution) {
             printTimeout();
+        }
     }
 
+
+
+    /**
+     * Helper Functions
+     */
+    private void printSolution(int totalNodes, long ms, Node childAtGoal) {
+        printTotalNodesGenerated(totalNodes);
+        printFormattedRunTime(ms);
+        printPathAndPathLength(childAtGoal);
+    }
+    private void printTotalNodesGenerated(int totalNodes) {
+        System.out.println("Total nodes generated: " + totalNodes);
+    }
     private void printFormattedRunTime(long ms) {
         long seconds = ms / 1000;
         long remainingMilliseconds = ms % 1000;
         System.out.println("Total time taken: " + seconds + "sec " + remainingMilliseconds + "ms");
+    }
+    private void printPathAndPathLength(Node childAtGoal) {
+        Stack<Action> solution = new Stack<>();
+        while (!childAtGoal.equals(root)) {
+            solution.add(childAtGoal.getAction());
+            childAtGoal = childAtGoal.getParent();
+        }
+
+        System.out.println("Path length: " + solution.size());
+        System.out.print("Path: ");
+
+        while (!solution.isEmpty())
+            System.out.print(solution.pop());
     }
 
     private void printTimeout() {

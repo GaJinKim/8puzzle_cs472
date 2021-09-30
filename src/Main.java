@@ -12,7 +12,8 @@ public class Main {
 
             // before attempting to solve
             if (!initialState.isSolvable()) {
-                System.out.println("Board is not solvable (odd number of inversions: " + initialState.numInversions() + ")");
+                System.out.println("The inputted puzzle is not solvable (odd number of inversions: " + initialState.numInversions() + ")");
+                System.out.println(initialState.toString());
             }
             else {
                 // before attempting to solve
@@ -29,8 +30,9 @@ public class Main {
                     switch (algorithm) {
                         case "BFS":
                             search.breadthFirstSearch();
-                        case "IDS":
-                            search.iterativeDeepeningSearch();
+                            break;
+//                        case "IDS":
+//                            search.iterativeDeepeningSearch();
 
                         default:
                             System.out.println("Error: Please re-enter algorithm");

@@ -76,7 +76,6 @@ public class Successor {
                 successors.add(downNode);
                 break;
         }
-
         return successors;
     }
 
