@@ -11,6 +11,7 @@ public class Node {
     private char[] state; // representation of a physical configuration (i.e. 8puzzle grid)
     private Node parent;
     private Action action;
+    private int depth;
 
     /**
      * Constructor
@@ -28,11 +29,13 @@ public class Node {
             System.out.println(e);
         }
         parent = null;
+        depth = 0;
     }
 
     public Node(Node n) {
         this.state = n.state.clone();
         this.parent = n.parent;
+        depth = 0;
     }
 
     /**
@@ -45,6 +48,7 @@ public class Node {
         return parent;
     }
     public Action getAction() { return action; }
+    public int getDepth() { return depth; }
 
     /**
      * Setters
@@ -56,6 +60,7 @@ public class Node {
         this.parent = parent;
     }
     public void setAction(Action action) { this.action = action; }
+    public void setDepth(int depth) { this.depth = depth; }
 
     /**
      * Actions

@@ -59,6 +59,7 @@ public class Search {
             closed.add(current.getState());
 
             List<Node> successors = Successor.getSuccessors(current);
+            System.out.println("added nodes # " + successors.size());
             totalNodes += successors.size();
 
             for (Node child : successors) {

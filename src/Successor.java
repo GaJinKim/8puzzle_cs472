@@ -16,18 +16,22 @@ public class Successor {
         Node leftNode = new Node(node);
         leftNode.moveLeft();
         leftNode.setParent(node); // needs a reference to its parent
+        leftNode.setDepth(node.getDepth() + 1); // increment depth
 
         Node rightNode = new Node(node);
         rightNode.moveRight();
         rightNode.setParent(node);
+        rightNode.setDepth(node.getDepth() + 1); // increment depth
 
         Node upNode = new Node(node);
         upNode.moveUp();
         upNode.setParent(node);
+        upNode.setDepth(node.getDepth() + 1); // increment depth
 
         Node downNode = new Node(node);
         downNode.moveDown();
         downNode.setParent(node);
+        downNode.setDepth(node.getDepth() + 1); // increment depth
 
         /**
          * Board Positions
@@ -40,17 +44,21 @@ public class Successor {
             case 0:
                 successors.add(leftNode);
                 successors.add(upNode);
+                break;
             case 1:
                 successors.add(rightNode);
                 successors.add(leftNode);
                 successors.add(upNode);
+                break;
             case 2:
                 successors.add(rightNode);
                 successors.add(upNode);
+                break;
             case 3:
                 successors.add(downNode);
                 successors.add(upNode);
                 successors.add(leftNode);
+                break;
             case 4:
                 successors.add(downNode);
                 successors.add(upNode);
