@@ -59,16 +59,17 @@ public class Search {
             closed.add(current.getState());
 
             List<Node> successors = Successor.getSuccessors(current);
-            System.out.println("added nodes # " + successors.size());
             totalNodes += successors.size();
 
             for (Node child : successors) {
+                // child state is not in closed or fringe
                 if (!(closed.contains(child.getState()) || fringe.contains(child))) {
                     if (atGoalState(child)) {
                         printSolution(totalNodes, System.currentTimeMillis() - startTime, child);
                         foundSolution = true;
                         break outerloop;
                     }
+                    System.out.println(child.toString());
                     fringe.add(child);
                 }
             }
@@ -77,8 +78,6 @@ public class Search {
             printTimeout();
         }
     }
-
-
 
     /**
      * Helper Functions
