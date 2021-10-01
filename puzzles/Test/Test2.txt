@@ -1,3 +1,51 @@
-1 2 3
-4 8 6
-7 5 _
+   public void aStarSearch(Node problem, String heuristic) {
+        long startTime = System.currentTimeMillis();
+
+        HashSet<String> closed = new HashSet<String>();
+        PriorityQueue<Node> fringe = new PriorityQueue<Node>(new PriorityComparator());
+        fringe.add(problem);
+
+        while (System.currentTimeMillis() - startTime < fifteenMinInMs) {
+            Node node = fringe.poll();
+
+            if (atGoalState(node)) {
+                long execTime = System.currentTimeMillis() - startTime;
+                printSolution(totalNodes, execTime, node);
+                return;
+            }
+
+            // for each action in problem...
+            List<char[]> successors = Successor.getSuccessorStates(node);
+            for (char[] state : successors) {
+                if (closed.contains(Arrays.toString(state)))
+                    continue;
+
+                closed.add(Arrays.toString(state));
+
+                // new child
+                Node child = new Node(state);
+                totalNodes++;
+
+                node.addChild(child);
+                child.setParent(node);
+                child.setDepth(node.getDepth() + 1);
+                child.setCost(node.getCost());
+                child.setAction(Successor.getDirection(child.getState(), node.getState()));
+
+                switch (heuristic) {
+                    case "h1":
+                        child.setTotalCost(child.getCost() + heuristicOne(child.getState(), getGoalState()));
+                        break;
+                    case "h2":
+                        child.setTotalCost(child.getCost() + heuristicTwo(child.getState(), getGoalState()));
+                        break;
+                    case "h3":
+                        child.setTotalCost(child.getCost() + heuristicThree(child.getState(), getGoalState()));
+                        break;
+                }
+                fringe.add(child);
+            }
+        }
+        if (System.currentTimeMillis() - startTime > fifteenMinInMs)
+            printTimeout();
+    }

@@ -9,7 +9,6 @@ public class Main {
 
         System.out.println("Enter file path (e.g. \"./puzzles/Part2/S2.txt\"):");
         Node initialState = new Node(new File(scan.next())); // TODO TESTING
-//        Node initialState = new Node(new File("./puzzles/Part2/S11.txt"));
 
         // before attempting to solve
         if (!initialState.isSolvable()) {
@@ -18,7 +17,7 @@ public class Main {
         }
         else {
             // before attempting to solve
-            Search search = new Search(initialState);
+            Search search = new Search();
             if (search.atGoalState(initialState)) {
                 System.out.print("\nBoard is already at goal state");
             }
@@ -38,11 +37,13 @@ public class Main {
                         search.iterativeDeepening(initialState);
                         break;
                     case "h1":
-                        search.aStar(initialState, "h1");
+                        search.aStarSearch(initialState, "h1");
                         break;
                     case "h2":
+                        search.aStarSearch(initialState, "h2");
                         break;
                     case "h3":
+                        search.aStarSearch(initialState, "h3");
                         break;
                 }
             }

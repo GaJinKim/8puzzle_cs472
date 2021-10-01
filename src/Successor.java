@@ -138,7 +138,7 @@ public class Successor {
 
         Node leftNode = new Node(node);
         leftNode.moveLeft();
-        leftNode.setParent(node); // needs a reference to its parent
+        leftNode.setParent(node); // needs reference to its parent
         leftNode.setDepth(node.getDepth() + 1); // increment depth
 
         Node rightNode = new Node(node);
