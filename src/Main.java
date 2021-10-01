@@ -35,8 +35,7 @@ public class Main {
                         search.breadthFirstSearch(initialState);
                         break;
                     case "IDS":
-                        System.out.println("Limit?");
-                        search.iterativeDeepening(scan.nextInt());
+                        search.iterativeDeepening(initialState);
                         break;
                     case "h1":
                         break;

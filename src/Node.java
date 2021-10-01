@@ -171,30 +171,24 @@ public class Node {
     private int getXCoord(int pos) {
         return pos % 3;
     }
-
     private int getYCoord(int pos) {
         return pos / 3;
     }
-
     private int getPosition(int x, int y) {
         return x + 3 * y;
     }
-
     private char getValueAt(int x, int y) {
         return state[getPosition(x, y)];
     }
-
     public int getGapPosition() {
         return getPositionOf('_');
     }
-
     public int getPositionOf(char val) {
         for (int i = 0; i < 9; i++)
             if (state[i] == val)
                 return i;
         return -1;
     }
-
     private void setValue(int x, int y, char val) {
         int pos = getPosition(x, y);
         state[pos] = val;

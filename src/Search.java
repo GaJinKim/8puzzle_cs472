@@ -62,8 +62,8 @@ public class Search {
                 if (closed.contains(state))
                     continue;
                 closed.add(state);
-                System.out.println(closed.size());
 
+                // new child node generated
                 Node child = new Node(state);
                 totalNodes++;
 
@@ -82,38 +82,64 @@ public class Search {
             printSolution(totalNodes, execTime, current);
     }
 
-    /**
-     * Depth Limited Algorithm
-     */
-    public void depthLimitedSearch(int limit) {
-    }
-
-    public Node recursiveDepthLimitedSearch(Node node, Node problem, int limit) {
-        boolean cutoffOccurred = false;
-        if (atGoalState(problem)) {
-            System.out.println("solution");
-            return node;
-        } else if (node.getDepth() == limit) {
-            System.out.println("cutoff");
-            return null;
-        } else {
-
-            List<Node> successors = Successor.getSuccessors(problem); // automatically generates children
-            for (Node s : successors) {
-
-            }
-        }
-
-        return null;
-    }
 
     /**
      * Iterative Deepening Search (IDS)
      */
-    public void iterativeDeepening(int depthLimit) {
-
+    public void iterativeDeepening(Node problem) {
+        long startTime = System.currentTimeMillis();
+        int depth = 0;
+        while (System.currentTimeMillis() - startTime < 900000) {
+            String result = depthLimitedSearch(problem, depth, startTime);
+            if (!result.equals("cutoff")) {
+                break;
+            }
+            depth++;
+        }
     }
 
+    public String depthLimitedSearch(Node problem, int limit, long startTime) {
+        return recursiveDLS(new Node(problem.getState()), problem, limit, startTime);
+    }
+
+    public String recursiveDLS(Node node, Node problem, int limit, long startTime) {
+        boolean cutoffOccurred = false;
+        if (atGoalState(node)) {
+            printSolution(totalNodes,System.currentTimeMillis() - startTime, node);
+            return "solution";
+        }
+
+        else if (node.getDepth() == limit) {
+            return "cutoff";
+        }
+
+        else {
+            List<char[]> successors = Successor.getSuccessorStates(node);
+            for (char[] state : successors) {
+
+                // new child node generated
+                Node child = new Node(state);
+                totalNodes++;
+
+                node.addChild(child);
+                child.setParent(node);
+                child.setDepth(node.getDepth() + 1);
+                child.setAction(Successor.getDirection(child.getState(), node.getState()));
+
+                String result = recursiveDLS(child, problem, limit, startTime);
+                if (result.equals("cutoff")) {
+                    cutoffOccurred = true;
+                } else if (!result.equals("failure")) {
+                    return result;
+                }
+            }
+            if (cutoffOccurred) {
+                return "cutoff";
+            } else {
+                return "failure";
+            }
+        }
+    }
 
     /**
      * Helper Functions
