@@ -2,46 +2,52 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Main {
+    public static long startTime = 0;
+
     public static void main (String[] arg) {
         Scanner scan = new Scanner(System.in);
-        boolean again = true;
 
-        while (again) {
-            System.out.println("Enter file path (e.g. \"./puzzles/Part2/S2.txt\"):");
-            Node initialState = new Node(new File(scan.next()));
+        System.out.println("Enter file path (e.g. \"./puzzles/Part2/S2.txt\"):");
+        Node initialState = new Node(new File(scan.next())); // TODO TESTING
+//        Node initialState = new Node(new File("./puzzles/Part2/S11.txt"));
 
+        // before attempting to solve
+        if (!initialState.isSolvable()) {
+            System.out.println("The inputted puzzle is not solvable (odd number of inversions: " + initialState.numInversions() + ")");
+            System.out.println(initialState.toString());
+        }
+        else {
             // before attempting to solve
-            if (!initialState.isSolvable()) {
-                System.out.println("The inputted puzzle is not solvable (odd number of inversions: " + initialState.numInversions() + ")");
-                System.out.println(initialState.toString());
+            Search search = new Search(initialState);
+            if (search.atGoalState(initialState)) {
+                System.out.print("\nBoard is already at goal state");
             }
+
+            // attempt to solve
             else {
-                // before attempting to solve
-                Search search = new Search(initialState);
-                if (search.atGoalState(initialState)) {
-                    System.out.println("Board is already at goal state");
-                }
+                System.out.println("Enter Algorithm (e.g. \"BFS\", \"IDS\", \"h1\", \"h2\", \"h3\")");
+                String algorithm = scan.next();
+                System.out.println("\n+-------------------------------+");
+                startTime = System.currentTimeMillis();
 
-                // attempt to solve
-                else {
-                    System.out.println("Enter Algorithm (e.g. \"BFS\", \"IDS\", \"h1\", \"h2\", \"h3\")");
-                    String algorithm = scan.next();
-
-                    switch (algorithm) {
-                        case "BFS":
-                            search.breadthFirstSearch();
-                            break;
-//                        case "IDS":
-//                            search.iterativeDeepeningSearch();
-
-                        default:
-                            System.out.println("Error: Please re-enter algorithm");
-                    }
+                switch (algorithm) {
+                    case "BFS":
+                        search.breadthFirstSearch(initialState);
+                        break;
+                    case "IDS":
+                        System.out.println("Limit?");
+                        search.iterativeDeepening(scan.nextInt());
+                        break;
+                    case "h1":
+                        break;
+                    case "h2":
+                        break;
+                    case "h3":
+                        break;
                 }
             }
-            System.out.println("\nEnd Program? (y/n)");
-            String endProgram = scan.next();
-            again = endProgram.equals("y") ? false : true;
+            System.out.print("\n+-------------------------------+");
         }
     }
+
 }

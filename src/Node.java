@@ -9,9 +9,11 @@ import java.util.Scanner;
  */
 public class Node {
     private char[] state; // representation of a physical configuration (i.e. 8puzzle grid)
+    private ArrayList<Node> children;
     private Node parent;
     private Action action;
     private int depth;
+    private boolean visited;
 
     /**
      * Constructor
@@ -28,14 +30,19 @@ public class Node {
         } catch (Exception e) {
             System.out.println(e);
         }
+        children = new ArrayList<Node>();
         parent = null;
         depth = 0;
     }
 
     public Node(Node n) {
         this.state = n.state.clone();
-        this.parent = n.parent;
-        depth = 0;
+        this.children = new ArrayList<Node>();
+    }
+
+    public Node(char[] state) {
+        this.state = state.clone();
+        children = new ArrayList<>();
     }
 
     /**
@@ -44,11 +51,13 @@ public class Node {
     public char[] getState() {
         return state;
     }
+    public ArrayList<Node> getChildren() { return children; }
     public Node getParent() {
         return parent;
     }
     public Action getAction() { return action; }
     public int getDepth() { return depth; }
+    public boolean getVisited() { return visited; }
 
     /**
      * Setters
@@ -56,11 +65,18 @@ public class Node {
     public void setState(char[] state) {
         this.state = state;
     }
+    public void setChildren(ArrayList<Node> children) { this.children = children; }
     public void setParent(Node parent) {
         this.parent = parent;
     }
     public void setAction(Action action) { this.action = action; }
     public void setDepth(int depth) { this.depth = depth; }
+    public void setVisited(boolean visited) {this.visited = visited; }
+
+    /**
+     * Add child
+     */
+    public void addChild(Node child) { children.add(child); }
 
     /**
      * Actions
@@ -172,7 +188,7 @@ public class Node {
         return getPositionOf('_');
     }
 
-    private int getPositionOf(char val) {
+    public int getPositionOf(char val) {
         for (int i = 0; i < 9; i++)
             if (state[i] == val)
                 return i;

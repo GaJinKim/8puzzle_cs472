@@ -45,39 +45,75 @@ public class Search {
      *
      * <Total nodes generated, Total time taken, Valid sequence of actions>>
      */
-    public void breadthFirstSearch() {
-        Set<char[]> closed = new HashSet<char[]>(); // closed list (explored set)
-        Queue<Node> fringe = new LinkedList<Node>(); // open list (not yet explored set)
-        fringe.add(root);
-
-        boolean foundSolution = false;
+    public void breadthFirstSearch(Node problem) {
         long startTime = System.currentTimeMillis();
 
-        outerloop:
-        while (!fringe.isEmpty() && System.currentTimeMillis() - startTime < fifteenMinInMilliseconds) {
-            Node current = fringe.remove(); // pop() equivalent
+        Set<char[]> closed = new HashSet<char[]>(); // closed list (explored set)
+        Queue<Node> fringe = new LinkedList<Node>(); // open list (not yet explored set)
+        fringe.add(problem);
+
+        Node current = new Node(root.getState());
+
+        while (!atGoalState(current) && System.currentTimeMillis() - startTime < 900000) {
             closed.add(current.getState());
+            List<char[]> successors = Successor.getSuccessorStates(current);
+            for (char[] state : successors) {
+                // if we've already visited this state before
+                if (closed.contains(state))
+                    continue;
+                closed.add(state);
+                System.out.println(closed.size());
 
-            List<Node> successors = Successor.getSuccessors(current);
-            totalNodes += successors.size();
+                Node child = new Node(state);
+                totalNodes++;
 
-            for (Node child : successors) {
-                // child state is not in closed or fringe
-                if (!(closed.contains(child.getState()) || fringe.contains(child))) {
-                    if (atGoalState(child)) {
-                        printSolution(totalNodes, System.currentTimeMillis() - startTime, child);
-                        foundSolution = true;
-                        break outerloop;
-                    }
-                    System.out.println(child.toString());
-                    fringe.add(child);
-                }
+                current.addChild(child);
+                child.setParent(current);
+                child.setDepth(current.getDepth() + 1);
+                child.setAction(Successor.getDirection(child.getState(), current.getState()));
+                fringe.add(child);
+            }
+            current = fringe.poll();
+        }
+        long execTime = System.currentTimeMillis() - startTime;
+        if (execTime > 900000)
+            printTimeout();
+        else
+            printSolution(totalNodes, execTime, current);
+    }
+
+    /**
+     * Depth Limited Algorithm
+     */
+    public void depthLimitedSearch(int limit) {
+    }
+
+    public Node recursiveDepthLimitedSearch(Node node, Node problem, int limit) {
+        boolean cutoffOccurred = false;
+        if (atGoalState(problem)) {
+            System.out.println("solution");
+            return node;
+        } else if (node.getDepth() == limit) {
+            System.out.println("cutoff");
+            return null;
+        } else {
+
+            List<Node> successors = Successor.getSuccessors(problem); // automatically generates children
+            for (Node s : successors) {
+
             }
         }
-        if (!foundSolution) {
-            printTimeout();
-        }
+
+        return null;
     }
+
+    /**
+     * Iterative Deepening Search (IDS)
+     */
+    public void iterativeDeepening(int depthLimit) {
+
+    }
+
 
     /**
      * Helper Functions
@@ -87,19 +123,19 @@ public class Search {
         printFormattedRunTime(ms);
         printPathAndPathLength(childAtGoal);
     }
-    private void printTotalNodesGenerated(int totalNodes) {
-        System.out.println("Total nodes generated: " + totalNodes);
-    }
-    private void printFormattedRunTime(long ms) {
+    private static void printFormattedRunTime(long ms) {
         long seconds = ms / 1000;
         long remainingMilliseconds = ms % 1000;
         System.out.println("Total time taken: " + seconds + "sec " + remainingMilliseconds + "ms");
     }
-    private void printPathAndPathLength(Node childAtGoal) {
+    private void printTotalNodesGenerated(int totalNodes) {
+        System.out.println("Total nodes generated: " + totalNodes);
+    }
+    private void printPathAndPathLength(Node goal) {
         Stack<Action> solution = new Stack<>();
-        while (!childAtGoal.equals(root)) {
-            solution.add(childAtGoal.getAction());
-            childAtGoal = childAtGoal.getParent();
+        while (goal.getParent() != null) {
+            solution.add(goal.getAction());
+            goal = goal.getParent();
         }
 
         System.out.println("Path length: " + solution.size());
