@@ -10,7 +10,7 @@ Lab 1 Assignment for CS 472
 
 **Instructions:**
 1. Clone repository
-2. Run Main
+2. Run Main (8puzzle_cs472/src/Main.java)
 3. Program will ask for file path (e.g. ./puzzles/Part2/S2.txt)
 4. Program will ask for algorithm (e.g. BFS/IDS/h1/h2/h3)
 
