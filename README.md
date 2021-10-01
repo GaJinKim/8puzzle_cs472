@@ -15,5 +15,5 @@ Lab 1 Assignment for CS 472
 4. Program will ask for algorithm (e.g. BFS/IDS/h1/h2/h3)
 
 **Parts 2 and 3 are located in project top directory (same as this one)**
-- Part2.md
-- Part3.md
+- Part2.pdf
+- Part3.pdf
