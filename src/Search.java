@@ -290,6 +290,6 @@ public class Search {
         System.out.println("Path length: timed out.");
         System.out.println("Total nodes generated: <<??>>");
         System.out.println("Total time taken: > 15 min");
-        System.out.println("\n+-------------------------------+");
+        System.out.println("+-------------------------------+");
     }
 }
