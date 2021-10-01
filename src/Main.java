@@ -38,6 +38,7 @@ public class Main {
                         search.iterativeDeepening(initialState);
                         break;
                     case "h1":
+                        search.aStar(initialState, "h1");
                         break;
                     case "h2":
                         break;

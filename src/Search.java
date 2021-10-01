@@ -1,10 +1,11 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Search {
-    private static final long fifteenMinInMilliseconds = 900000;
+    private static final long fifteenMinInMs = 900000;
+    private static final char[] goalState = new char[] {'1','2','3','4','5','6','7','8','_'};
 
     private Node root; // initial state
-    private char[] goalState;
     private int totalNodes;
 
     /**
@@ -12,24 +13,14 @@ public class Search {
      */
     public Search(Node root) {
         this.root = root;
-        this.goalState = new char[] {'1','2','3','4','5','6','7','8','_'};
         totalNodes = 0;
     }
 
     /**
      * Getters
      */
-    public Node getRoot() {
-        return root;
-    }
     public char[] getGoalState() { return goalState; }
 
-    /**
-     * Setters
-     */
-    public void setRoot(Node root) {
-        this.root = root;
-    }
 
     /**
      *  Goal test
@@ -48,24 +39,24 @@ public class Search {
     public void breadthFirstSearch(Node problem) {
         long startTime = System.currentTimeMillis();
 
-        Set<char[]> closed = new HashSet<char[]>(); // closed list (explored set)
+        Set<String> closed = new HashSet<String>(); // closed list (explored set)
         Queue<Node> fringe = new LinkedList<Node>(); // open list (not yet explored set)
-        fringe.add(problem);
+        fringe.add(new Node(problem));
 
-        Node current = new Node(root.getState());
-
-        while (!atGoalState(current) && System.currentTimeMillis() - startTime < 900000) {
-            closed.add(current.getState());
+        Node current = new Node(problem.getState());
+        while (!atGoalState(current) && System.currentTimeMillis() - startTime < fifteenMinInMs) {
+            closed.add(Arrays.toString(current.getState()));
             List<char[]> successors = Successor.getSuccessorStates(current);
             for (char[] state : successors) {
                 // if we've already visited this state before
                 if (closed.contains(state))
                     continue;
-                closed.add(state);
+                closed.add(Arrays.toString(state));
 
                 // new child node generated
                 Node child = new Node(state);
                 totalNodes++;
+                System.out.println(totalNodes);
 
                 current.addChild(child);
                 child.setParent(current);
@@ -76,12 +67,11 @@ public class Search {
             current = fringe.poll();
         }
         long execTime = System.currentTimeMillis() - startTime;
-        if (execTime > 900000)
+        if (execTime > fifteenMinInMs)
             printTimeout();
         else
             printSolution(totalNodes, execTime, current);
     }
-
 
     /**
      * Iterative Deepening Search (IDS)
@@ -89,7 +79,7 @@ public class Search {
     public void iterativeDeepening(Node problem) {
         long startTime = System.currentTimeMillis();
         int depth = 0;
-        while (System.currentTimeMillis() - startTime < 900000) {
+        while (System.currentTimeMillis() - startTime < fifteenMinInMs) {
             String result = depthLimitedSearch(problem, depth, startTime);
             if (!result.equals("cutoff")) {
                 break;
@@ -139,6 +129,80 @@ public class Search {
                 return "failure";
             }
         }
+    }
+
+    /**
+     * A Star (with heuristics)
+     *
+     * h1 - misplaced tiles
+     * h2 - manhattan distance
+     */
+    public void aStar(Node problem, String heuristic) {
+        long startTime = System.currentTimeMillis();
+
+        HashSet<String> closed = new HashSet<String>();
+        PriorityComparator compare = new PriorityComparator();
+
+        PriorityQueue<Node> fringe = new PriorityQueue<Node>(compare);
+        Node currentNode = new Node(problem);
+        currentNode.setCost(0);
+        currentNode.setTotalCost(0);
+        fringe.add(currentNode);
+
+        while (!atGoalState(currentNode) && System.currentTimeMillis() - startTime < fifteenMinInMs) {
+            closed.add(Arrays.toString(currentNode.getState()));
+
+            List<char[]> successors = Successor.getSuccessorStates(currentNode);
+            System.out.println(successors.size());
+            for (char[] n : successors) {
+                if (closed.contains(Arrays.toString(n))) {
+                    continue;
+                }
+                closed.add(Arrays.toString(n));
+
+                // new child
+                Node child = new Node(n);
+                totalNodes++;
+
+                currentNode.addChild(child);
+                child.setParent(currentNode);
+                child.setDepth(currentNode.getDepth() + 1);
+                child.setCost(currentNode.getCost());
+                child.setAction(Successor.getDirection(child.getState(), currentNode.getState()));
+
+                // f(n) = total cost = g(n) + h(n)
+                // g(n) = cost (to get to this point)
+                // h(n) = estimated cost
+                if (heuristic.equals("h1")) {
+                    child.setTotalCost(child.getCost() + heuristicOne(child.getState(), getGoalState()));
+                    System.out.println(Arrays.toString(child.getState()) + " " + child.getTotalCost());
+                }
+                fringe.add(child);
+            }
+            currentNode = fringe.poll();
+        }
+        long execTime = System.currentTimeMillis() - startTime;
+        if (execTime > fifteenMinInMs)
+            printTimeout();
+        else
+            printSolution(totalNodes, execTime, currentNode);
+    }
+
+    /**
+     * Heuristics
+     *
+     * heuristicOne - misplaced tiles
+     *
+     * heuristicsTwo - manhattan distance
+     */
+
+    private int heuristicOne(char[] current, char[] goal) {
+        int misplaced = 0;
+        for (int i = 0; i < current.length; i++) {
+            if (current[i] != goal[i])
+                misplaced++;
+        }
+        return misplaced;
     }
 
     /**

@@ -13,7 +13,10 @@ public class Node {
     private Node parent;
     private Action action;
     private int depth;
+    private int cost; // g(n)
+    private int totalCost; // f(n) = g(n) + h(n)
     private boolean visited;
+
 
     /**
      * Constructor
@@ -57,6 +60,8 @@ public class Node {
     }
     public Action getAction() { return action; }
     public int getDepth() { return depth; }
+    public int getCost() { return cost; }
+    public int getTotalCost() { return totalCost; }
     public boolean getVisited() { return visited; }
 
     /**
@@ -71,6 +76,8 @@ public class Node {
     }
     public void setAction(Action action) { this.action = action; }
     public void setDepth(int depth) { this.depth = depth; }
+    public void setCost(int cost) { this.cost = cost; }
+    public void setTotalCost(int totalCost) { this.totalCost = totalCost; }
     public void setVisited(boolean visited) {this.visited = visited; }
 
     /**

@@ -10,13 +10,6 @@ public class Successor {
         List<Action> actions = new ArrayList<Action>();
         int gapPosition = node.getGapPosition();
 
-        /**
-         * Board Positions
-         *
-         * 0 1 2
-         * 3 4 5
-         * 6 7 8
-         */
         switch(gapPosition) {
             case 0:
                 actions.add(Action.L);
@@ -64,6 +57,12 @@ public class Successor {
         return actions;
     }
 
+    /**
+     * Retrieves a list of valid child states given a parent node
+     *
+     * @param node node to which we want to find viable successor states
+     * @return list of reachable states
+     */
     public static List<char[]> getSuccessorStates(Node node) {
         List<char[]> successorStates = new ArrayList<char[]>();
         int gapPosition = node.getGapPosition();
@@ -128,12 +127,12 @@ public class Successor {
     }
 
     /**
-     * Retrieves a list of successors given a node and its allowed actions
+     * Retrieves a list of child nodes given a parent node
      *
      * @param node node to which we want to find viable successors
      * @return list of reachable nodes
      */
-    public static List<Node> getSuccessors(Node node) {
+    public static List<Node> getSuccessorNodes(Node node) {
         List<Node> successors = new ArrayList<Node>();
         int gapPosition = node.getGapPosition();
 
@@ -157,13 +156,6 @@ public class Successor {
         downNode.setParent(node);
         downNode.setDepth(node.getDepth() + 1); // increment depth
 
-        /**
-         * Board Positions
-         *
-         * 0 1 2
-         * 3 4 5
-         * 6 7 8
-         */
         switch(gapPosition) {
             case 0:
                 successors.add(leftNode);
@@ -225,11 +217,9 @@ public class Successor {
             return Action.R;
         }
     }
-
     public static int getGapPosition(char[] state) {
         return getPositionOf(state,'_');
     }
-
     public static int getPositionOf(char[] state, char val) {
         for (int i = 0; i < 9; i++)
             if (state[i] == val)
