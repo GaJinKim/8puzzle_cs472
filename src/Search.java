@@ -202,7 +202,6 @@ public class Search {
                     distance += ((Math.abs(i % 3 - j % 3)) + Math.abs(i / 3 + j / 3));
             }
         }
-        System.out.println("distance is " + distance);
         return distance;
     }
 
@@ -249,7 +248,6 @@ public class Search {
         for (int i = 0; i < current.length; i++) {
             val += Math.abs(c[i] - g[i]);
         }
-        System.out.println("score is " + val);
         return val;
     }
 
