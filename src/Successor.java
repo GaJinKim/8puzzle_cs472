@@ -207,14 +207,15 @@ public class Successor {
      * Based on the position of the relative position of the gaps, we can determine the direction
      */
     public static Action getDirection(char[] child, char[] parent) {
-        if (getGapPosition(child) - getGapPosition(parent) == 3) {
-            return Action.U;
-        } else if (getGapPosition(child) - getGapPosition(parent) == -3) {
-            return Action.D;
-        } else if (getGapPosition(child) - getGapPosition(parent) == 1) {
-            return Action.L;
-        } else {
-            return Action.R;
+        switch (getGapPosition(child) - getGapPosition(parent)) {
+            case 3:
+                return Action.U;
+            case -3:
+                return Action.D;
+            case 1:
+                return Action.L;
+            default: // case -1:
+                return Action.R;
         }
     }
     public static int getGapPosition(char[] state) {

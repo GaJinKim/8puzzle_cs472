@@ -10,23 +10,18 @@ public class Main {
         System.out.println("Enter file path (e.g. \"./puzzles/Part2/S2.txt\"):");
         Node initialState = new Node(new File(scan.next())); // TODO TESTING
 
-        // before attempting to solve
+        // check if state is solvable
         if (!initialState.isSolvable()) {
             System.out.println("The inputted puzzle is not solvable (odd number of inversions: " + initialState.numInversions() + ")");
             System.out.println(initialState.toString());
-        }
-        else {
-            // before attempting to solve
+        } else {
+            // check if already at goal state
             Search search = new Search();
             if (search.atGoalState(initialState)) {
                 System.out.print("\nBoard is already at goal state");
-            }
-
-            // attempt to solve
-            else {
+            } else {
                 System.out.println("Enter Algorithm (e.g. \"BFS\", \"IDS\", \"h1\", \"h2\", \"h3\")");
                 String algorithm = scan.next();
-                System.out.println("\n+-------------------------------+");
                 startTime = System.currentTimeMillis();
 
                 switch (algorithm) {
@@ -47,7 +42,6 @@ public class Main {
                         break;
                 }
             }
-            System.out.print("\n+-------------------------------+");
         }
     }
 

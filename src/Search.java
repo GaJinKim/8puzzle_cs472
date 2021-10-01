@@ -10,7 +10,6 @@ public class Search {
      * Constructor
      */
     public Search() {
-        // initial state
         totalNodes = 0;
     }
 
@@ -77,9 +76,8 @@ public class Search {
         int depth = 0;
         while (System.currentTimeMillis() - startTime < fifteenMinInMs) {
             String result = depthLimitedSearch(problem, depth, startTime);
-            if (!result.equals("cutoff")) {
+            if (!result.equals("cutoff"))
                 break;
-            }
             depth++;
         }
     }
@@ -195,14 +193,17 @@ public class Search {
     }
 
     private int heuristicTwo(char[] current, char[] goal) {
-        int distance = 0;
-        for (int i = 0; i < current.length; i++) {
-            for (int j = 0; j < goal.length; j++) {
-                if (current[i] == goal[j])
-                    distance += ((Math.abs(i % 3 - j % 3)) + Math.abs(i / 3 + j / 3));
+        int manhattanDistance = 0;
+        int len = current.length;
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                if (current[i] == goal[j]) {
+                    manhattanDistance += Math.abs(i % 3 - j % 3);
+                    manhattanDistance += Math.abs(i / 3 + j / 3);
+                }
             }
         }
-        return distance;
+        return manhattanDistance;
     }
 
     /**
@@ -211,7 +212,7 @@ public class Search {
      * This heuristic sums the differences between current and goal tiles.
      * The idea is the further away a square is from its goal, the greater the penalty.
      *
-     * (gap is 9)
+     * (gap is assigned a value of 9)
      *
      * For example:
      * 8 1 2
@@ -255,9 +256,11 @@ public class Search {
      * Helper Functions
      */
     private void printSolution(int totalNodes, long ms, Node childAtGoal) {
+        System.out.println("\n+-------------------------------+");
         printTotalNodesGenerated(totalNodes);
         printFormattedRunTime(ms);
         printPathAndPathLength(childAtGoal);
+        System.out.println("\n+-------------------------------+");
     }
     private static void printFormattedRunTime(long ms) {
         long seconds = ms / 1000;
@@ -282,9 +285,11 @@ public class Search {
     }
 
     private void printTimeout() {
+        System.out.println("\n+-------------------------------+");
         System.out.println("Path: timed out.");
         System.out.println("Path length: timed out.");
         System.out.println("Total nodes generated: <<??>>");
         System.out.println("Total time taken: > 15 min");
+        System.out.println("\n+-------------------------------+");
     }
 }
